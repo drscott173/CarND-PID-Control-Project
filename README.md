@@ -2,6 +2,32 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ---
+## Discussion
+
+A [video](https://youtu.be/ZZ3uLfluHjQ) of our car is available on YouTube.
+
+We implemented two PID controllers, one for the steering, another for the throttle. The
+PID controller has a built-in Twiddle function for updating parameters after every one,
+if so desired.  We made no other changes to the logic of the car, focusing instead
+on the peculiar behavior of PID controllers.
+
+We found our values using the following process:
+
+1) Set throttle to a constant 0.3
+2) Run Twiddle on our steering PID controller until the delta values for each parameter
+are less then 1E-04.
+3) Hold the steering PID controller steady.
+4) Run Twiddle on our throttle PID controller until the delta values for each
+parameter are less than 1E-05.
+5) Repeat steps 2 through 4 decreasing the tolerance by a factor of 10 each time,
+until we end with 1E-08.
+
+Whenever we were optimizing a controller we used a common error / loss function
+to optimize both: we wanted to minimize average square error, while maximizing
+the number of iterations we could run without crashing, and also maximizing speed.
+Since Twiddle seeks to minimize loss, our function was (error - n - max_speed), where
+n was the number of iterations, error was the average squared error for all n,
+and max_speed was the maximum speed we obtained.
 
 ## Dependencies
 
